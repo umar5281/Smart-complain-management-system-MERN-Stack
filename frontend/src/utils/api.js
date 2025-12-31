@@ -9,6 +9,14 @@ const api = axios.create({
   }
 });
 
+// const api = axios.create({
+//   baseURL: 'https://smart-complain-management-mern-stack.onrender.com/api',
+//   headers: {
+//     'Content-Type': 'application/json'
+//   }
+// });
+
+
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
