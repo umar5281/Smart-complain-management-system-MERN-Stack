@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   FaPlus,
   FaList,
@@ -8,10 +8,10 @@ import {
   FaHome,
   FaExclamationCircle,
   FaCheckCircle,
-  FaClock
-} from 'react-icons/fa';
-import { useAuth } from '../context/AuthContext';
-import { complaintAPI } from '../utils/api';
+  FaClock,
+} from "react-icons/fa";
+import { useAuth } from "../context/AuthContext";
+import { complaintAPI } from "../utils/api";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -21,14 +21,14 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState(''); // ✅ FIX
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState(""); // ✅ FIX
 
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    category: 'Service',
-    priority: 'Medium'
+    title: "",
+    description: "",
+    category: "Service",
+    priority: "Medium",
   });
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const Dashboard = () => {
       const response = await complaintAPI.getAll();
       setComplaints(response.data.data);
     } catch (err) {
-      console.error('Error fetching complaints:', err);
+      console.error("Error fetching complaints:", err);
     } finally {
       setLoading(false);
     }
@@ -48,40 +48,42 @@ const Dashboard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     setSubmitting(true);
 
     try {
       await complaintAPI.submit(formData);
       setShowForm(false);
       setFormData({
-        title: '',
-        description: '',
-        category: 'Service',
-        priority: 'Medium'
+        title: "",
+        description: "",
+        category: "Service",
+        priority: "Medium",
       });
-      setSuccessMessage('Complaint submitted successfully!');
-      setTimeout(() => setSuccessMessage(''), 4000);
+      setSuccessMessage("Complaint submitted successfully!");
+      setTimeout(() => setSuccessMessage(""), 4000);
       fetchComplaints();
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to submit complaint');
+      setError(err.response?.data?.message || "Failed to submit complaint");
     } finally {
       setSubmitting(false);
     }
   };
 
-  const getStatusColor = (status) => ({
-    Pending: 'bg-yellow-500',
-    'In-Progress': 'bg-blue-500',
-    Resolved: 'bg-green-500',
-    Closed: 'bg-gray-500'
-  }[status] || 'bg-gray-500');
+  const getStatusColor = (status) =>
+    ({
+      Pending: "bg-yellow-500",
+      "In-Progress": "bg-blue-500",
+      Resolved: "bg-green-500",
+      Closed: "bg-gray-500",
+    }[status] || "bg-gray-500");
 
-  const getPriorityColor = (priority) => ({
-    Low: 'bg-green-500',
-    Medium: 'bg-yellow-500',
-    High: 'bg-red-500'
-  }[priority] || 'bg-gray-500');
+  const getPriorityColor = (priority) =>
+    ({
+      Low: "bg-green-500",
+      Medium: "bg-yellow-500",
+      High: "bg-red-500",
+    }[priority] || "bg-gray-500");
 
   if (loading) {
     return (
@@ -94,7 +96,6 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-indigo-50 to-purple-50 py-8">
       <div className="container mx-auto px-4">
-
         {/* HEADER */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -108,24 +109,24 @@ const Dashboard = () => {
             <p className="text-gray-600">Manage your complaints</p>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
             <Link
               to="/"
-              className="px-6 py-3 bg-gray-500 text-white rounded-xl flex items-center gap-2"
+              className="flex-1 md:flex-none px-6 py-3 bg-gray-500 text-white rounded-xl flex items-center justify-center gap-2"
             >
               <FaHome /> Home
             </Link>
 
             <button
               onClick={() => setShowForm(!showForm)}
-              className="px-6 py-3 bg-purple-600 text-white rounded-xl flex items-center gap-2"
+              className="flex-1 md:flex-none px-6 py-3 bg-purple-600 text-white rounded-xl flex items-center justify-center gap-2"
             >
-              <FaPlus /> {showForm ? 'Cancel' : 'Submit Complaint'}
+              <FaPlus /> {showForm ? "Cancel" : "Submit Complaint"}
             </button>
 
             <button
               onClick={logout}
-              className="px-6 py-3 bg-red-500 text-white rounded-xl"
+              className="flex-1 md:flex-none px-6 py-3 bg-red-500 text-white rounded-xl"
             >
               Logout
             </button>
@@ -180,7 +181,7 @@ const Dashboard = () => {
                 disabled={submitting}
                 className="w-full py-3 bg-purple-600 text-white rounded-xl"
               >
-                {submitting ? 'Submitting...' : 'Submit'}
+                {submitting ? "Submitting..." : "Submit"}
               </button>
             </form>
           </motion.div>
@@ -200,10 +201,18 @@ const Dashboard = () => {
               <p className="text-gray-600 mb-3">{complaint.description}</p>
 
               <div className="flex gap-2">
-                <span className={`px-3 py-1 text-white rounded-full ${getPriorityColor(complaint.priority)}`}>
+                <span
+                  className={`px-3 py-1 text-white rounded-full ${getPriorityColor(
+                    complaint.priority
+                  )}`}
+                >
                   {complaint.priority}
                 </span>
-                <span className={`px-3 py-1 text-white rounded-full ${getStatusColor(complaint.status)}`}>
+                <span
+                  className={`px-3 py-1 text-white rounded-full ${getStatusColor(
+                    complaint.status
+                  )}`}
+                >
                   {complaint.status}
                 </span>
               </div>
@@ -212,10 +221,9 @@ const Dashboard = () => {
                 <FaClock />
                 {new Date(complaint.createdAt).toLocaleDateString()}
               </div>
-            </motion.div> 
+            </motion.div>
           ))}
         </div>
-
       </div>
     </div>
   );
